@@ -1,8 +1,6 @@
 <template>
 <div id="app">
-  <md-toolbar class="md-primary">
-    <h3 class="md-title">Parking space finder</h3>
-  </md-toolbar>
+  <router-view name="toolbar"></router-view>
   <main>
     <img src="./assets/logo.png" alt="Vue.js PWA">
     <router-view></router-view>
@@ -12,7 +10,7 @@
 
 <script>
 export default {
-  name: 'app'
+  name: 'app',
 }
 </script>
 

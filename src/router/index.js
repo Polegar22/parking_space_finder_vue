@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Hello from '@/components/Hello'
+import DefaultToolbar from '@/components/toolbars/DefaultToolbar'
 
 Vue.use(Router)
 
@@ -9,7 +10,15 @@ export default new Router({
     {
       path: '/',
       name: 'Hello',
-      component: Hello
+      components: {
+        default: Hello,
+        toolbar: DefaultToolbar
+      },
+      props: {
+        toolbar: {
+          pagetitle: 'Parking space finder'
+        }
+      }
     }
   ]
 })
