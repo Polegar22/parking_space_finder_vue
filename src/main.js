@@ -6,6 +6,13 @@ import router from './router'
 
 Vue.config.productionTip = false
 
+
+import { MdToolbar } from 'vue-material/dist/components'
+import 'vue-material/dist/vue-material.min.css'
+import 'vue-material/dist/theme/default.css'
+
+Vue.use(MdToolbar)
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
