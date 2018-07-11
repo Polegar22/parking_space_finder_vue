@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import DefaultToolbar from '@/components/toolbars/DefaultToolbar'
+import FindParkingSpace from '@/components/FindParkingSpace'
 
 Vue.use(Router)
 
