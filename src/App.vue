@@ -1,13 +1,12 @@
 <template>
-  <div id="app">
-    <header>
-      <span>Vue.js PWA</span>
-    </header>
-    <main>
-      <img src="./assets/logo.png" alt="Vue.js PWA">
-      <router-view></router-view>
-    </main>
-  </div>
+<div id="app">
+  <header>
+    <span>Parking space finder</span>
+  </header>
+  <main>
+    <router-view></router-view>
+  </main>
+</div>
 </template>
 
 <script>
