@@ -1,8 +1,8 @@
 <template>
 <div id="app">
-  <header>
-    <span>Parking space finder</span>
-  </header>
+  <md-toolbar class="md-primary">
+    <h3 class="md-title">Parking space finder</h3>
+  </md-toolbar>
   <main>
     <router-view></router-view>
   </main>
