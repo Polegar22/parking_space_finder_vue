@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import DefaultToolbar from '@/components/toolbars/DefaultToolbar'
 
 import FindParkingSpace from '@/components/FindParkingSpace'
-import CreateFreeSpace from '@/components/CreateFreeSpace'
+import CreateEmptySpot from '@/components/CreateEmptySpot'
 
 Vue.use(Router)
 
@@ -23,10 +23,10 @@ export default new Router({
       }
     },
     {
-      path: '/createFreeSpace',
-      name: 'CreateFreeSpace',
+      path: '/createEmptySpot',
+      name: 'CreateEmptySpot',
       components: {
-        default: CreateFreeSpace,
+        default: CreateEmptySpot,
         toolbar: DefaultToolbar
       },
       props: {
