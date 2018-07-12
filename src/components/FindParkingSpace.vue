@@ -1,6 +1,6 @@
 <template>
 <div>
-  <google-map name="example"></google-map>
+  <google-map name="parkings" :emptySpots="this.emptySpots"></google-map>
 
   <router-link :to="{ name:'CreateEmptySpot'}">
     <md-speed-dial class="md-bottom-right md-fixed">
@@ -14,10 +14,27 @@
 
 <script>
 import GoogleMap from '@/components/map/GoogleMap'
+import service from '@/services/parkings'
+
 export default {
   name: 'findParkingSpace',
   components: {
     GoogleMap,
+  },
+  mounted() {
+    this.getEmptySpots()
+  },
+  data() {
+    return {
+      emptySpots: [],
+    }
+  },
+  methods: {
+    getEmptySpots() {
+      this.emptySpots = service.getEmptySpots()
+      //.then(reponse => this.emptySpots = reponse.data)
+      //.catch(error => console.log(error))
+    }
   }
 };
 </script>

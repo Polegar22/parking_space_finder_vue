@@ -35,6 +35,8 @@
 </template>
 
 <script>
+import service from '@/services/parkings'
+
 export default {
   data() {
     return {

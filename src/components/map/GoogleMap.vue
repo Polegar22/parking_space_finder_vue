@@ -5,44 +5,55 @@
 <script>
 export default {
   name: 'google-map',
-  props: ['name'],
+  props: {
+    name: String,
+    emptySpots: Array
+  },
   data: function() {
     return {
       mapName: this.name + "-map",
-      markerCoordinates: [{
-        latitude: 51.501527,
-        longitude: -0.1921837
-      }, {
-        latitude: 51.505874,
-        longitude: -0.1838486
-      }, {
-        latitude: 51.4998973,
-        longitude: -0.202432
-      }],
       map: null,
       bounds: null,
-      markers: []
+    }
+  },
+  watch: {
+    emptySpots: function(newValues, oldValues) {
+      if (newValues) {
+        newValues.forEach((spot) => {
+          const position = new google.maps.LatLng(spot.latitude, spot.longitude);
+          const marker = new google.maps.Marker({
+            position,
+            map: this.map
+          });
+          this.map.fitBounds(this.bounds.extend(position))
+        });
+      }
     }
   },
   mounted: function() {
     this.bounds = new google.maps.LatLngBounds();
     const element = document.getElementById(this.mapName)
-    const mapCentre = this.markerCoordinates[0]
     const options = {
-      center: new google.maps.LatLng(51.501527, -0.1921837)
+      zoom: 14,
+      center: new google.maps.LatLng(0.0, 0.0)
     }
     this.map = new google.maps.Map(element, options);
-
-    this.markerCoordinates.forEach((coord) => {
-      const position = new google.maps.LatLng(coord.latitude, coord.longitude);
-      const marker = new google.maps.Marker({
-        position,
-        map: this.map
-      });
-
-      this.markers.push(marker)
-      this.map.fitBounds(this.bounds.extend(position))
-    });
+    this.geolocate()
+  },
+  methods: {
+    geolocate() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+          var pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+          this.map.setCenter(pos)
+        });
+      } else {
+        console.log("Veuillez activer la géolocalisation")
+      }
+    }
   }
 };
 </script>
