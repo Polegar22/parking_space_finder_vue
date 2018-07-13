@@ -1,10 +1,19 @@
 <template>
-<div class="google-map" :id="mapName"></div>
+<div class="google-map">
+  <transition name="fade">
+    <gmap-side-panel v-if="showSidePanel" :spot="currentSpot"></gmap-side-panel>
+  </transition>
+  <div class="google-map" :id="mapName"></div>
+</div>
 </template>
 
 <script>
+import GmapSidePanel from '@/components/map/GmapSidePanel'
 export default {
   name: 'google-map',
+  components: {
+    GmapSidePanel,
+  },
   props: {
     name: String,
     emptySpots: Array
@@ -14,17 +23,29 @@ export default {
       mapName: this.name + "-map",
       map: null,
       bounds: null,
+      showSidePanel: false,
+      currentSpot: {},
     }
   },
   watch: {
     emptySpots: function(newValues, oldValues) {
       if (newValues) {
+        const self = this
         newValues.forEach((spot) => {
+
+          const contentStr = 'test'
+          const infoWindow = new google.maps.InfoWindow({
+            content: contentStr
+          })
           const position = new google.maps.LatLng(spot.latitude, spot.longitude);
           const marker = new google.maps.Marker({
             position,
-            map: this.map
+            map: this.map,
           });
+          marker.addListener('click', () => {
+            self.showSidePanel = true
+            this.currentSpot = spot
+          })
           this.map.fitBounds(this.bounds.extend(position))
         });
       }
@@ -38,6 +59,10 @@ export default {
       center: new google.maps.LatLng(0.0, 0.0)
     }
     this.map = new google.maps.Map(element, options);
+    google.maps.event.addListener(this.map, 'click', event => {
+      this.showSidePanel = false
+      this.currentSpot = {}
+    })
     this.geolocate()
   },
   methods: {
@@ -53,17 +78,26 @@ export default {
       } else {
         console.log("Veuillez activer la géolocalisation")
       }
-    }
+    },
   }
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style scoped lang="scss">
 .google-map {
-  width: 100%;
-  height: 100%;
-  margin: 0 auto;
-  background: gray;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    background: gray;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.5s;
+}
+/* .fade-leave-active below version 2.1.8 */
+.fade-enter,
+.fade-leave-to {
+    opacity: 0;
 }
 </style>
