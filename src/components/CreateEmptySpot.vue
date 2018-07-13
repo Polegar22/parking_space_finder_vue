@@ -1,5 +1,6 @@
 <template>
 <div class="createEmptySpot">
+  <google-map name="createEmptySpot"></google-map>
   <form class="md-layout" @submit.prevent="createSpace">
     <md-card class="md-layout-item md-size-50 md-small-size-100">
       <md-card-header>
@@ -20,8 +21,8 @@
           </div>
           <div class="md-layout-item md-size-100">
             <md-field>
-              <label for="spotInfos">Infos</label>
-              <md-textarea v-model="emptySpot.infos" name="spotInfos"></md-textarea>
+              <label for="spotComment">Infos</label>
+              <md-textarea v-model="emptySpot.comment" name="spotComment"></md-textarea>
             </md-field>
           </div>
         </div>
@@ -36,21 +37,33 @@
 
 <script>
 import service from '@/services/parkings'
+import GoogleMap from '@/components/map/GoogleMap'
+
 
 export default {
+  name: 'createEmptySpot',
+  components: {
+    GoogleMap,
+  },
   data() {
     return {
       emptySpot: {
+        latitude: '48.883054',
+        longitude: '2.338634',
         size: '',
         type: '',
-        infos: '',
+        comment: '',
       },
     }
   },
   methods: {
     createSpace() {
-      console.log(this.emptySpot)
-      //TODO call api
+      service.createEmptySpot(this.emptySpot)
+        .then(reponse => {
+          this.emptySpot = reponse.data
+          this.$router.push("/")
+        })
+        .catch(error => console.log(error))
     },
   }
 }

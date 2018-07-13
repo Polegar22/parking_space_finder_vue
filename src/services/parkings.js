@@ -2,21 +2,22 @@ import axios from '@/services/api'
 
 const parkingsUrl = "/parkings/"
 
+function serialize(spot) {
+	return {
+			latitude: spot.latitude,
+			longitude: spot.longitude,
+			type: spot.type,
+			size: spot.size,
+      plannedDuration: "",
+			comment: spot.comment
+	}
+}
+
 export default{
   getEmptySpots(){
-    return [{
-        latitude: 48.883625,
-        longitude: 2.338387
-      }, {
-        latitude: 48.883322,
-        longitude: 2.334476
-      }, {
-        latitude: 48.88242,
-        longitude: 2.337925
-      }]
-    //return axios.get(parkingsUrl)
+    return axios.get(parkingsUrl)
   },
   createEmptySpot(emptySpot){
-    axios.post(parkingsUrl, emptySpot)
+    return axios.post(parkingsUrl, serialize(emptySpot))
   }
 }

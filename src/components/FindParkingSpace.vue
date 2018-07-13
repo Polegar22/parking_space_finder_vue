@@ -31,9 +31,9 @@ export default {
   },
   methods: {
     getEmptySpots() {
-      this.emptySpots = service.getEmptySpots()
-      //.then(reponse => this.emptySpots = reponse.data)
-      //.catch(error => console.log(error))
+      service.getEmptySpots()
+        .then(reponse => this.emptySpots = reponse.data)
+        .catch(error => console.log(error))
     }
   }
 };
