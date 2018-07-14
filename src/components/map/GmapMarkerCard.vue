@@ -1,5 +1,5 @@
 <template>
-<md-card class="gmap-side-panel">
+<md-card class="gmap-marker-card">
   <md-card-content>
     <div class="title">
       Place libre
@@ -28,7 +28,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.gmap-side-panel {
+.gmap-marker-card {
     position: absolute;
     bottom: 0;
     right: 0;
