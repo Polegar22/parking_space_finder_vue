@@ -18,12 +18,13 @@ export default {
     name: String,
     emptySpots: Array,
     showSidePanel: false,
-    currentSpot: {},
+    currentSpot: {}
   },
   data: function() {
     return {
       mapName: this.name + "-map",
-      map: null
+      map: null,
+      curPosMarker: null
     }
   },
   watch: {
@@ -60,13 +61,16 @@ export default {
   methods: {
     geolocate() {
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(position => {
+        navigator.geolocation.watchPosition(position => {
           var curPos = {
             lat: position.coords.latitude,
             lng: position.coords.longitude
           };
           this.map.setCenter(curPos)
-          const curPosMarker = new google.maps.Marker({
+          if (this.curPosMarker != null) {
+            this.curPosMarker.setMap(null)
+          }
+          this.curPosMarker = new google.maps.Marker({
             position: curPos,
             map: this.map,
             icon: {
@@ -74,27 +78,30 @@ export default {
               scale: 4
             }
           });
-
-          //Permet de tourner le marker en fonction de la direction
-          if (window.DeviceOrientationEvent) {
-            window.addEventListener('deviceorientation', event => {
-              var alpha = null;
-              //Check for iOS property
-              if (event.webkitCompassHeading) {
-                alpha = event.webkitCompassHeading;
-              }
-              //non iOS
-              else {
-                alpha = event.alpha;
-              }
-              var locationIcon = curPosMarker.get('icon');
-              locationIcon.rotation = 360 - alpha;
-              curPosMarker.set('icon', locationIcon);
-            }, false);
-          }
+        }, null, {
+          enableHighAccuracy: true
         });
       } else {
         console.log("Veuillez activer la géolocalisation")
+      }
+      //Permet de tourner le marker en fonction de la direction
+      if (window.DeviceOrientationEvent) {
+        window.addEventListener('deviceorientation', event => {
+          var alpha = null;
+          //Check for iOS property
+          if (event.webkitCompassHeading) {
+            alpha = event.webkitCompassHeading;
+          }
+          //non iOS
+          else {
+            alpha = event.alpha;
+          }
+          if (this.curPosMarker != null) {
+            var locationIcon = this.curPosMarker.get('icon');
+            locationIcon.rotation = 360 - alpha;
+            this.curPosMarker.set('icon', locationIcon);
+          }
+        }, false);
       }
     }
   }
