@@ -1,10 +1,19 @@
 <template>
-<div class="google-map" :id="mapName"></div>
+<div class="google-map">
+  <transition name="fade">
+    <gmap-marker-card v-if="showSidePanel" :spot="currentSpot"></gmap-marker-card>
+  </transition>
+  <div class="google-map" :id="mapName"></div>
+</div>
 </template>
 
 <script>
+import GmapMarkerCard from '@/components/map/GmapMarkerCard'
 export default {
   name: 'google-map',
+  components: {
+    GmapMarkerCard,
+  },
   props: {
     name: String,
     emptySpots: Array
