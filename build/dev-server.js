@@ -64,7 +64,7 @@ app.use(devMiddleware)
 const staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
 app.use(staticPath, express.static('./static'))
 
-const uri = 'http://localhost:' + port
+const uri = 'https://localhost:' + port
 
 let _resolve
 const readyPromise = new Promise(resolve => {
@@ -72,6 +72,7 @@ const readyPromise = new Promise(resolve => {
 })
 
 console.log('> Starting dev server...')
+
 devMiddleware.waitUntilValid(() => {
   console.log('> Listening at ' + uri + '\n')
   // when env is testing, don't need open it
@@ -80,8 +81,13 @@ devMiddleware.waitUntilValid(() => {
   }
   _resolve()
 })
-
-const server = app.listen(port)
+var https = require('https');
+var fs = require('fs');
+var options = {
+  key: fs.readFileSync(__dirname + '\\key.pem'),
+  cert: fs.readFileSync(__dirname + '\\server.crt')
+};
+var server = https.createServer(options, app).listen(port);
 
 module.exports = {
   ready: readyPromise,

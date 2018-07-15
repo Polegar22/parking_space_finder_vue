@@ -31,7 +31,7 @@ export default new Router({
       },
       props: {
         toolbar: {
-          pagetitle: 'Indiquez une place libre'
+          pagetitle: 'Indiquer une place libre'
         }
       }
     },
