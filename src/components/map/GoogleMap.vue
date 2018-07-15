@@ -16,7 +16,9 @@ export default {
   },
   props: {
     name: String,
-    emptySpots: Array
+    emptySpots: Array,
+    showSidePanel: false,
+    currentSpot: {},
   },
   data: function() {
     return {
@@ -27,12 +29,21 @@ export default {
   watch: {
     emptySpots: function(newValues, oldValues) {
       if (newValues) {
+        const self = this
         newValues.forEach((spot) => {
+          const contentStr = 'test'
+          const infoWindow = new google.maps.InfoWindow({
+            content: contentStr
+          })
           const position = new google.maps.LatLng(spot.latitude, spot.longitude);
           const marker = new google.maps.Marker({
             position,
-            map: this.map
+            map: this.map,
           });
+          marker.addListener('click', () => {
+            self.showSidePanel = true
+            this.currentSpot = spot
+          })
         });
       }
     }
@@ -97,5 +108,17 @@ export default {
   height: 100%;
   margin: 0 auto;
   background: gray;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+
+/* .fade-leave-active below version 2.1.8 */
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
