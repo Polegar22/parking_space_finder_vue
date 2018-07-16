@@ -1,6 +1,6 @@
 <template>
 <div class="createEmptySpot">
-  <google-map name="createEmptySpot"></google-map>
+  <google-map name="createEmptySpot" :showCenterMarker="true"></google-map>
   <form class="md-layout" @submit.prevent="createSpace">
     <md-card class="md-layout-item md-size-50 md-small-size-100">
       <md-card-header>

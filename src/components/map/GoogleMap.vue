@@ -18,6 +18,7 @@ export default {
     name: String,
     emptySpots: Array,
     showSidePanel: false,
+    showCenterMarker: false,
     currentSpot: {}
   },
   data: function() {
@@ -57,11 +58,13 @@ export default {
       center: new google.maps.LatLng(48.857386, 2.351833)
     }
     this.map = new google.maps.Map(element, options);
-    const self = this
-    this.map.addListener('center_changed', function() {
-      if (self.centerMarker != null)
-        self.centerMarker.setPosition(self.map.getCenter())
-    });
+    if (this.showCenterMarker) {
+      const self = this
+      this.map.addListener('center_changed', function() {
+        if (self.centerMarker != null)
+          self.centerMarker.setPosition(self.map.getCenter())
+      });
+    }
     this.geolocate()
   },
   methods: {
@@ -81,11 +84,14 @@ export default {
                 scale: 4
               }
             });
-            this.map.setCenter(curPos)
-            this.centerMarker = new google.maps.Marker({
-              position: this.map.getCenter(),
-              map: this.map,
-            });
+            if (this.showCenterMarker) {
+              this.centerMarker = new google.maps.Marker({
+                position: this.map.getCenter(),
+                map: this.map,
+              });
+            } else {
+              this.map.setCenter(curPos)
+            }
           } else {
             this.curPosMarker.setPosition(curPos)
           }

@@ -1,6 +1,6 @@
 <template>
 <div>
-  <google-map name="parkings" :emptySpots="this.emptySpots"></google-map>
+  <google-map name="parkings" :emptySpots="this.emptySpots" :showCenterMarker="false"></google-map>
 
   <router-link :to="{ name:'CreateEmptySpot'}">
     <md-speed-dial class="md-bottom-right md-fixed">
