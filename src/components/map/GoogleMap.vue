@@ -24,7 +24,8 @@ export default {
     return {
       mapName: this.name + "-map",
       map: null,
-      curPosMarker: null
+      curPosMarker: null,
+      centerMarker: null
     }
   },
   watch: {
@@ -56,6 +57,11 @@ export default {
       center: new google.maps.LatLng(48.857386, 2.351833)
     }
     this.map = new google.maps.Map(element, options);
+    const self = this
+    this.map.addListener('center_changed', function() {
+      if (self.centerMarker != null)
+        self.centerMarker.setPosition(self.map.getCenter())
+    });
     this.geolocate()
   },
   methods: {
@@ -66,18 +72,23 @@ export default {
             lat: position.coords.latitude,
             lng: position.coords.longitude
           };
-          this.map.setCenter(curPos)
-          if (this.curPosMarker != null) {
-            this.curPosMarker.setMap(null)
+          if (this.curPosMarker == null) {
+            this.curPosMarker = new google.maps.Marker({
+              position: curPos,
+              map: this.map,
+              icon: {
+                path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                scale: 4
+              }
+            });
+            this.map.setCenter(curPos)
+            this.centerMarker = new google.maps.Marker({
+              position: this.map.getCenter(),
+              map: this.map,
+            });
+          } else {
+            this.curPosMarker.setPosition(curPos)
           }
-          this.curPosMarker = new google.maps.Marker({
-            position: curPos,
-            map: this.map,
-            icon: {
-              path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
-              scale: 4
-            }
-          });
         }, null, {
           enableHighAccuracy: true
         });
